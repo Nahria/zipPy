@@ -9,9 +9,9 @@ If any downloads failed and you want to try them again, simply re-run the same c
 
 # Requirements
 * Python 2
-  * clint
   * requests
   * dcryptit (https://github.com/ianling/dcryptit-python)
+  * tqdm (https://github.com/tqdm/tqdm)
 
 # Usage
     $ python zipPy.py -h
@@ -37,13 +37,16 @@ If any downloads failed and you want to try them again, simply re-run the same c
     http://www20.zippyshare.com/v/xyyxxxxx/file.html
     $ python zipPy -f list.txt
     Downloading (1/5): Some.File.7z.001 (attempt 1/3)
-    [################################] 512000/512001 - 00:05:52
+    76%|████████████████████████████         | 75mb/100mb [00:33<00:10, 229.00kb/s]
     Downloading (2/5): {...}
     
     Summary: 5 successful, 0 failed, 0 skipped
     $ 
 
 # Changelog
+## v1.5
+* Removed clint in profit of tqdm
+* Some minors bugs
 ## v1.4
 * Changed download flow, so re-attempting downloads actually works now
 * Added a little bit more error handling

@@ -1,7 +1,7 @@
 #!/usr/bin/python
-VERSION = '1.4'
+VERSION = '1.5'
 
-from clint.textui import progress
+from tqdm import tqdm
 from dcryptit import read_dlc
 from optparse import OptionParser
 from os import remove
@@ -11,6 +11,7 @@ from requests import get
 from sys import exit
 from urllib import unquote
 from sys import exc_info
+from math import ceil
 
 
 option_parser = OptionParser(usage="Usage: %prog [options] [url1] [url2] ...", version="%%prog v%s" % VERSION)
@@ -66,6 +67,7 @@ failures = 0
 skips = 0
 max_attempts = 3
 current_url_number = 0
+
 for url in url_list:
     attempts = 1
     current_url_number += 1
@@ -117,9 +119,11 @@ for url in url_list:
                     try:
                         file_download = get(download_url, stream=True, cookies=cookies)
                         path = '%s%s' % (output_dir, filename)
+                        total_size = int(file_download.headers.get('content-length'))
+                        chunk_size=1024
+                        
                         with open(path, 'wb') as f:
-                            total_length = int(file_download.headers.get('content-length'))
-                            for chunk in progress.bar(file_download.iter_content(chunk_size=1024), expected_size=(total_length/1024) + 1):
+                            for chunk in tqdm(file_download.iter_content(chunk_size), total=ceil(total_size/chunk_size), unit='MB', unit_scale=True):
                                 if chunk:
                                     f.write(chunk)
                                     f.flush()
