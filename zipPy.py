@@ -15,7 +15,8 @@ from sys import exc_info
 
 option_parser = OptionParser(usage="Usage: %prog [options] [url1] [url2] ...", version="%%prog v%s" % VERSION)
 option_parser.add_option('-f', '--file', action='store', dest='url_list_file',
-                         help='Path to FILE containing a list of Zippyshare.com URLs separated by newlines', metavar='FILE') option_parser.add_option('-d', '--dlc', action='store', dest='dlc_file',
+                         help='Path to FILE containing a list of Zippyshare.com URLs separated by newlines', metavar='FILE')
+option_parser.add_option('-d', '--dlc', action='store', dest='dlc_file',
                          help='Path or URL to DLC FILE containing a list of Zippyshare.com URLs', metavar='DLC FILE')
 option_parser.add_option('-o', '--output', action='store', dest='output_dir', default='./',
                          help='DIRECTORY to save downloaded files to', metavar='/path/to/destination/')
@@ -72,7 +73,7 @@ for url in url_list:
     skipped = False
     while attempts <= max_attempts and not finished_download and not skipped:
         try:
-            url_info = match('http://(\w+)\.zippyshare\.com/v/(\w+)/file.html', url).groups()
+            url_info = match('https?://(\w+)\.zippyshare\.com/v/(\w+)/file.html', url).groups()
         except:
             print 'Failed to parse URL, skipping: %s' % repr(url)
             skipped = True
